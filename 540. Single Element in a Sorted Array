@@ -1,0 +1,34 @@
+int singleNonDuplicate(int* nums, int numsSize) {
+    int end = numsSize - 1, start = 0, mid;
+    while(end - start >= 2)
+    {
+        mid = (end - start)/2;
+        if  (nums[start + mid] == nums[start + mid + 1])
+        {
+            if (mid % 2)
+            {
+                end = start + mid - 1;
+            }
+            else
+            {
+                start = start + mid + 2;
+            }
+        }
+        else if (nums[start + mid] == nums[start + mid - 1])
+        {
+            if (mid % 2)
+            {
+                start = start + mid + 1;
+            }
+            else
+            {
+                end = start + mid - 2;
+            }
+        }
+        else
+        {
+            return nums[start + mid];
+        }
+    }
+    return nums[end];
+}
