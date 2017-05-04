@@ -1,0 +1,65 @@
+//leetcode 567. Permutation in String
+
+bool checkInclusion(char* s1, char* s2) {
+    //find string lengths
+    int s1len, s2len;
+    for (s1len = 0; s1[s1len] && s1len < 10000; s1len++);
+    for (s2len = 0; s2[s2len] && s2len < 10000; s2len++);
+    
+    if (s1len > s2len)
+    {
+        return false;
+    }
+    
+    //create array of char counts for s1, we'll make this count negative
+    //to indicate missing chars we must find
+    int charcount[26] = {0}; 
+    for (int x = 0; x < s1len; x++)
+    {
+        charcount[(s1[x])-'a']--;
+    }
+    
+    //load first s1len chars 
+    for (int x = 0; x < s1len; x++)
+    {
+        charcount[(s2[x])-'a']++;
+    }
+    
+    //check array to see if it is zero'd
+    bool zeroed = true;
+    for (int x = 0; x < 26; x++)
+    {
+        if (charcount[x] !=0)
+        {
+            zeroed = false;
+        }
+    }
+    if (zeroed)
+    {
+        return true;
+    }
+    
+    //now load one char and unload one char at a time, checking the char count
+    //we could probably make checks less frequent
+    for (int index = 0; index + s1len < s2len; index++)
+    {
+        charcount[(s2[index])-'a']--;
+        charcount[(s2[index+s1len])-'a']++;
+        zeroed = true;
+        for (int x = 0; x < 26; x++)
+        {
+            if (charcount[x] !=0)
+            {
+                zeroed = false;
+            }
+        }
+        if (zeroed)
+        {
+            return true;
+        }
+    }
+    return false;
+    
+    
+    
+}
