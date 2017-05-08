@@ -1,0 +1,21 @@
+//575. Distribute Candies
+int distributeCandies(int* candies, int candiesSize) {
+    int candycount[200001] = {0};
+    for (int x = 0; x < candiesSize; x++)
+    {
+        candycount[candies[x]+100000] = 1;
+    }
+    int count = 0;
+    for (int y = 0; y < 200001; y++)
+    {
+        count += candycount[y];
+    }
+    if (count > candiesSize/2)
+    {
+        return candiesSize/2;
+    }
+    else
+    {
+        return count;
+    }
+}
