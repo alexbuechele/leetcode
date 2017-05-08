@@ -1,0 +1,20 @@
+//573. Squirrel Simulation
+int minDistance(int height, int width, int* tree, int treeSize, int* squirrel, int squirrelSize, int** nuts, int nutsRowSize, int nutsColSize) {
+    int mindistance = 20000;
+    int nuttotree = 0;
+    int distance = 0;
+    
+    
+    for (int x = 0, testd; x<nutsRowSize;x++)
+    {
+        testd = abs(nuts[x][0] - squirrel[0]) + abs(nuts[x][1] - squirrel[1]) - abs(nuts[x][0] - tree[0]) - abs(nuts[x][1] - tree[1]);
+        if (testd < mindistance)
+        {
+            mindistance = testd;
+        }
+        distance += 2*(abs(nuts[x][0]-tree[0])+abs(nuts[x][1]-tree[1]));
+    }
+    distance +=mindistance;
+    
+    return distance;
+}
