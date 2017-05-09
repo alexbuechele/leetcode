@@ -1,0 +1,58 @@
+//2. Add Two Numbers
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
+    bool remaining = true;
+   
+    
+    struct ListNode *returnnode = malloc(sizeof(struct ListNode));
+    returnnode->val = 0;
+    returnnode->next = NULL;
+    
+    struct ListNode * temp3;
+    
+    temp3 = returnnode;
+    
+    for (int add = 0; remaining || add > 0;)
+    {
+        remaining = false;
+        if (l1)
+        {
+            add += l1->val;
+            if (l1->next)
+            {
+                remaining = true;
+            }
+            l1 = l1->next;
+        }
+        if (l2)
+        {
+            add += l2->val;
+            if (l2->next)
+            {
+                remaining = true;
+            }
+            l2 = l2->next;
+        }
+        temp3->val = add%10;
+        add = add/10;
+        if (add > 0)
+        {
+            remaining = true;
+        }
+        
+        if(remaining)
+        {
+            temp3->next = malloc(sizeof(struct ListNode));
+            temp3 = temp3->next;
+            temp3->val = 0;
+            temp3->next = NULL;
+        }
+    }
+    return returnnode;
+}
