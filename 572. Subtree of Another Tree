@@ -1,0 +1,53 @@
+//572. Subtree of Another Tree
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+bool isMatch(struct TreeNode* s, struct TreeNode* t); 
+ 
+bool isSubtree(struct TreeNode* s, struct TreeNode* t) 
+{
+    bool found;
+    found = isMatch(s, t);
+    if (found)
+    {
+        return true;
+    }
+    if(s->left)
+    {
+        found = (found || isSubtree(s->left, t));
+    }
+    if(s->right)
+    {
+        found = (found || isSubtree(s->right, t));
+    }
+    return found;
+    
+    
+}
+
+bool isMatch(struct TreeNode* s, struct TreeNode* t)
+{
+    bool match = (s->val == t->val);
+    if(s->left && t->left)
+    {
+        match = (match && isMatch(s->left, t->left));
+    }
+    else if(s->left || t->left)
+    {
+        match = false;
+    }
+    if(s->right && t->right)
+    {
+        match = (match && isMatch(s->right, t->right));
+    }
+    else if(s->right || t->right)
+    {
+        match = false;
+    }
+    return match;
+}
