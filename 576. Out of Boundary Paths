@@ -1,0 +1,73 @@
+//576. Out of Boundary Paths
+
+int findPaths(int m, int n, int N, int i, int j) 
+{
+    // create (m/2 + m%2) by (n/2 + n%2) by N array of arrays of solutions to memoize 
+    //    (these dimensions because of rectangular symmetry in solutions, reduces space needed and
+    //    computation time by 75% over an m*n*N array)
+    //iterate recursively for up, down, left, right
+    // at each step,  check solution array
+    // if it doesn't exist, continue computations and save result to solution array before returning
+    // if it does, simply return that value
+
+    
+    int * solutions;
+    solutions = malloc(sizeof(int)*(m/2 + m%2)*(n/2 + n%2)*N);
+    if(!solutions)
+    {
+        printf("ERROR");
+        return -1;
+    }
+    
+    for(int x = 0; x < (m/2 + m%2)*(n/2 + n%2)*N; x++)
+    {
+        solutions[x] = -1;
+    }
+    
+    int answer = pathRecurse(m, n, N, i, j, solutions);
+    
+    free(solutions);
+    solutions = NULL;
+    
+    return answer;
+}
+
+int pathRecurse(int m, int n, int N, int i, int j, int *solutions)
+{
+    //if we have strayed out of bounds, count this move and return 
+    if (i < 0 || j < 0 || i >= m || j >= n)
+    {
+        return 1;
+    }
+    //if we are out of moves, return 0
+    if (N == 0)
+    {
+        return 0;
+    }
+    int xcoord = (i < (m/2 + m%2)) ? i : m - i - 1;
+    int ycoord = (j < (n/2 + n%2)) ? j : n - j - 1;
+    
+    
+    int solutionindex = (xcoord * (n/2 + n%2)) + ycoord + ((m/2 + m%2)*(n/2 + n%2) * (N-1));
+    
+    
+    if (solutions[solutionindex] >= 0)
+    {
+        return solutions[solutionindex];
+    }
+    
+    
+    else if (N > 0)
+    {
+        int up = pathRecurse(m, n, N - 1, i - 1, j, solutions);
+        int down = pathRecurse(m, n, N - 1, i + 1, j, solutions);
+        int left = pathRecurse(m, n, N - 1, i, j - 1, solutions);
+        int right = pathRecurse(m, n, N - 1, i, j + 1, solutions); 
+        solutions[solutionindex] = ((((up%1000000007 + down%1000000007)%1000000007 + left%1000000007)%1000000007 + right%1000000007)%1000000007);
+        
+        //room for improvement here... 
+
+        return solutions[solutionindex];
+    }
+    return 0;
+}
