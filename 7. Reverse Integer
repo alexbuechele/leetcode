@@ -1,0 +1,30 @@
+//accepts a 32-bit signed integer and returns the number given by reversing its digits
+//returns 0 in the case of an integer overflow
+
+int reverse(int x) {
+    int y = 0;
+
+    //move the first 9 digits found from one number to the other
+    for (int a = 0;x && a < 9; a++)
+    {
+        y *= 10;
+        y += x%10;
+        x = x/10;
+    }
+
+    //if out of digits, return the value, otherwise check for an impending overflow
+    if (!x)
+    {
+        return y;
+    }
+    
+    if (y < -214748364|| y > 214748364)
+    {
+        return 0;
+    }
+    
+    // if we've come this far there can only be one digit remaining
+    return y*10 + x;
+    
+        
+}
