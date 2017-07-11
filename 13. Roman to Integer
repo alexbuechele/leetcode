@@ -1,0 +1,55 @@
+//13. Roman to Integer
+
+int romanToInt(char* s) {
+    int len = 0;
+    for (; s[len]; len++);
+    
+    int decimal[len];
+    for (int x = 0; x < len; x++)
+    {
+        switch(s[x])
+        {
+            case 'I':
+                decimal[x] = 1;
+                break;
+            case 'V':
+                decimal[x] = 5;
+                break;
+            case 'X':
+                decimal[x] = 10;
+                break;
+            case 'L':
+                decimal[x] = 50;
+                break;
+            case 'C':
+                decimal[x] = 100;
+                break;
+            case 'D':
+                decimal[x] = 500;
+                break;
+            case 'M':
+                decimal[x] = 1000;
+                break;
+        }  
+    }
+    int total = 0;
+    for (int i = 0; i < len; i++)
+    {
+        if (i < len - 1)
+        {
+            if (decimal[i+1] > decimal[i])
+            {
+                total -= decimal[i];
+            }
+            else
+            {
+                total += decimal[i];
+            }
+        }
+        else
+        {
+            total += decimal[i];
+        }
+    }
+    return total;
+}
