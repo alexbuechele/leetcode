@@ -1,0 +1,45 @@
+//695. Max Area of Island
+
+int probeSpot(int row, int col, int gridRowSize, int gridColSize, int **grid);
+int maxAreaOfIsland(int** grid, int gridRowSize, int gridColSize) {
+    
+    int size = gridRowSize*gridColSize;
+    int highesttotal = 0;
+    
+    int thistotal = 0;
+    for(int row = 0; row < gridRowSize; row++){
+        for(int col = 0; col < gridColSize; col++){
+            thistotal = probeSpot(row, col, gridRowSize, gridColSize, grid);
+            if (thistotal > highesttotal){
+                highesttotal = thistotal;
+            }
+        }
+    }
+    
+    return highesttotal;
+}
+
+int probeSpot(int row, int col, int gridRowSize, int gridColSize, int **grid){
+
+    if (grid[row][col] <=0 ){
+        return 0;
+    }
+    grid[row][col] = -1;
+    int thisland = 1;
+    
+    if (col + 1 < gridColSize){
+        thisland += probeSpot(row, col + 1, gridRowSize, gridColSize, grid);
+    }
+    if (col > 0){
+        thisland += probeSpot(row, col - 1, gridRowSize, gridColSize, grid);
+    }
+    if (row + 1 < gridRowSize){
+        thisland += probeSpot(row + 1, col, gridRowSize, gridColSize, grid);
+    }
+    if (row > 0){
+        thisland += probeSpot(row - 1, col, gridRowSize, gridColSize, grid);
+    }
+    
+    return thisland;
+    
+}
