@@ -1,0 +1,18 @@
+//717. 1-bit and 2-bit Characters
+
+bool isOneBitCharacter(int* bits, int bitsSize) {
+    if (bitsSize == 1){
+        return true;
+    }
+    int x;
+    
+    for (x = 0; x < bitsSize - 2; x++){
+        if (bits[x] == 1){
+            x += 1;
+        }
+    }
+    if (bits[x] == 0){
+        return true;
+    }
+    return false;
+}
