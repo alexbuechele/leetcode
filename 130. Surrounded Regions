@@ -1,0 +1,79 @@
+//130. Surrounded Regions
+
+void checkSpot(int indexi, int indexj, char ** board, int boardRowSize, int boardColSize, int ** keepZeroArray);
+
+
+void solve(char** board, int boardRowSize, int boardColSize) {
+        
+    if (boardRowSize < 3 || boardColSize < 3){
+        return;
+    }
+    
+    int *keepZeroArray[boardRowSize];
+    for (int i = 0; i< boardRowSize; i++){
+        keepZeroArray[i] = (int *)malloc(boardColSize*sizeof(int));
+        for(int j = 0; j < boardColSize; j++){
+            keepZeroArray[i][j] = 0;
+        }
+    }
+    
+    
+    
+    for (int index = 0; index < boardColSize; index++){
+        //check first row
+        checkSpot(0, index, board, boardRowSize, boardColSize, keepZeroArray);
+        
+        //check last row
+        checkSpot(boardRowSize - 1, index, board, boardRowSize, boardColSize, keepZeroArray);
+    } 
+    for (int index = 0; index < boardRowSize; index ++){
+        //check first column
+        checkSpot(index, 0, board, boardRowSize, boardColSize, keepZeroArray);
+        
+        //check last column
+        checkSpot(index, boardColSize - 1, board, boardRowSize, boardColSize, keepZeroArray);
+    }
+    
+    for (int i = 0; i < boardRowSize; i++){
+        for(int j = 0; j < boardColSize; j++){
+            if (keepZeroArray[i][j] == 0 && board[i][j] == 'O'){
+                board[i][j] = 'X';
+            }
+        }
+    }
+    
+    for (int i = 0; i< boardRowSize; i++){
+        free(keepZeroArray[i]);
+    }
+}
+
+void checkSpot(int indexi, int indexj, char ** board, int boardRowSize, int boardColSize, int ** keepZeroArray){
+    //if x, return
+    if (board[indexi][indexj] == 'X'){
+        return;
+    }
+    
+    //if in keep, return
+    if (keepZeroArray[indexi][indexj] == 1){
+        return;
+    }
+    
+    //if o, write to keep and checkspot neighbors
+    if (board[indexi][indexj] == 'O'){
+        keepZeroArray[indexi][indexj] = 1;
+        if (indexi - 1 >= 0){
+            checkSpot(indexi - 1, indexj, board, boardRowSize, boardColSize, keepZeroArray);
+        }
+        if (indexi + 1 < boardRowSize){
+            checkSpot(indexi + 1, indexj, board, boardRowSize, boardColSize, keepZeroArray);
+        }
+        if (indexj - 1 >= 0){
+            checkSpot(indexi, indexj - 1, board, boardRowSize, boardColSize, keepZeroArray);
+        }
+        if (indexj + 1 < boardColSize){
+            checkSpot(indexi, indexj + 1, board, boardRowSize, boardColSize, keepZeroArray);
+        }
+        
+    }
+    
+}
