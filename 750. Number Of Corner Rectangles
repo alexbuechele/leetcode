@@ -1,0 +1,39 @@
+//750. Number Of Corner Rectangles
+
+int countCornerRectangles(int** grid, int gridRowSize, int gridColSize) {
+    int count = 0;
+    for (int topLeftRow = 0, topLeftCol = 0; topLeftRow < gridRowSize - 1 && topLeftCol < gridColSize - 1;){
+        
+        //this is iterating through all spaces but the last row and column, looking for 1s for top left corners
+        if (grid[topLeftRow][topLeftCol] == 1){
+            
+            //iterate through rest of row, seeking top right corners
+            for (int topRightRow = topLeftRow + 1, topRightCol = topLeftCol; topRightRow < gridRowSize; topRightRow++){
+                if (grid[topRightRow][topRightCol] == 1){
+                    //top right corner found, iterate through col looking for bottom left corners
+                    for (int botLeftRow = topLeftRow, botLeftCol = topLeftCol + 1; botLeftCol < gridColSize; botLeftCol++){
+                        if (grid[botLeftRow][botLeftCol] == 1){
+                            if (grid[topRightRow][botLeftCol] == 1){
+                                count++;
+                            }
+                        }
+                    }
+                }
+                
+            }
+            
+        }
+        //yeesh
+        
+        
+        //iterate for the outer loop
+        if (topLeftRow < gridRowSize - 2){
+            topLeftRow++;
+        }
+        else {
+            topLeftRow = 0;
+            topLeftCol++;
+        }
+    }
+    return count;
+}
