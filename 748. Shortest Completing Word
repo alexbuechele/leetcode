@@ -1,0 +1,25 @@
+//748. Shortest Completing Word
+
+class Solution(object):
+    def shortestCompletingWord(self, licensePlate, words):
+        """
+        :type licensePlate: str
+        :type words: List[str]
+        :rtype: str
+        """
+        letters = []
+        for letter in licensePlate:
+            if letter.upper() >= 'A' and letter.upper() <= 'Z':
+                letters.append(letter.upper())
+                
+        words.sort(key = lambda x: len(x))
+
+        
+        for word in words:
+            lettersTemp = copy.deepcopy(letters)
+            for letter in word:
+                if letter.upper() in lettersTemp:
+                    lettersTemp.remove(letter.upper())
+                    if len(lettersTemp) == 0:
+                        return word
+        
