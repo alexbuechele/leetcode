@@ -1,0 +1,19 @@
+//746. Min Cost Climbing Stairs
+
+int minCostClimbingStairs(int* cost, int costSize) {
+    
+    for (int x = 2; x < costSize; x++){
+        if (cost[x-1] < cost[x-2]){
+            cost[x] += cost[x-1];
+        }
+        else {
+            cost[x] += cost[x-2];
+        }
+    }
+    if (cost[costSize - 1] < cost[costSize - 2]){
+        return cost[costSize - 1];
+    }
+    else {
+        return cost[costSize - 2];
+    }
+}
