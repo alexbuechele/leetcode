@@ -1,0 +1,47 @@
+//678. Valid Parenthesis String
+
+bool checkValidString(char* s) {
+    int a = 0;
+    int L = 0;
+    int R = 0;
+    int x = 0;
+    for (; *(s+x); x++){
+        switch (*(s+x)){
+            case '(':
+                L++;
+                break;
+            case ')':
+                R++;
+                break;
+            case '*':
+                a++;
+                break;
+        }
+        if (R > L + a){
+            return false;
+        }
+        
+    }
+    a = 0;
+    L = 0;
+    R = 0;
+    x--;
+    for (; x>=0; x--){
+        switch (*(s+x)){
+            case '(':
+                L++;
+                break;
+            case ')':
+                R++;
+                break;
+                
+            case '*':
+                a++;
+                break;
+        }
+        if (L > R + a){
+            return false;
+        }
+    }
+    return true;
+}
