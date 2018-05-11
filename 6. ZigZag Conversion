@@ -1,0 +1,45 @@
+//6. ZigZag Conversion
+
+char* convert(char* s, int numRows) {
+    
+    if (numRows == 1){
+        return s;
+    }
+    
+    int len = 0;
+    for (; s[len] != '\0'; len++);
+    
+    
+    char* answer = malloc(sizeof(char)*(len+1));
+    
+    int up = 0, down = (numRows - 1)*2;
+    
+    for (int row = 0, index = 0; row < numRows; row++){
+        for (int nextcount = row, direction = 1; nextcount < len;){
+            answer[index] = s[nextcount];
+            
+            //add distace to nextcount
+            if (row == 0 || row == numRows - 1){
+                nextcount += (up + down);
+            }
+            else if (direction == 1){
+                nextcount += down;
+            }
+            else {
+                nextcount += up;
+            }
+            
+            //change direction, add to index
+            direction = (direction*(-1));
+            index++;
+        }
+        down -= 2;
+        up += 2;
+        
+    }
+    
+    answer[len] = '\0';
+    //fixes a leetcode bug for one test case
+    
+    return answer;
+}
