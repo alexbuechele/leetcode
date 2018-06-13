@@ -1,0 +1,64 @@
+# 11. Container With Most Water
+
+class Solution(object):
+    def maxArea(self, height):
+        """
+        :type height: List[int]
+        :rtype: int
+        """
+        # our plan is to start at each end and work in for an O(N) solution
+        # we will move whichever wall is lower and re-test 
+        
+        
+        left = 0
+        right = len(height) - 1
+        
+        # the fill line, or "floor" is the shorter of our two walls
+        if height[0] > height[-1]:
+            ceiling, floor = height[0], height[-1]
+        else:
+            ceiling, floor = height[-1], height[0]
+        # ceiling is how we'll keep track of which wall is higher
+        
+        return_max = (right - left)*floor
+        
+        while left < right:
+            # only one of these while loops will be executed per loop, 
+            # moving the short wall and checking for a new max at each move
+            while height[left] < ceiling:
+                left += 1
+                if height[left] < ceiling:
+                    floor = height[left]
+                else:
+                    floor = ceiling
+                if (right - left)*floor > return_max:
+                    return_max = (right - left)*floor
+                    
+            while height[right] < ceiling:
+                right -= 1
+                if height[right] < ceiling:
+                    floor = height[right]
+                else:
+                    floor = ceiling
+                if (right - left)*floor > return_max:
+                    return_max = (right - left)*floor
+            
+            #don't get stuck when you reach two equal height lines
+            if height[left] == height[right]:
+                #move both, reset floor and ceiling, test for max
+                left += 1
+                right -= 1
+                if left >= right:
+                    return return_max
+                if height[left] > height[right]:
+                    ceiling, floor = height[left], height[right]
+                else:
+                    ceiling, floor = height[right], height[left]
+                if (right - left)*floor > return_max:
+                    return_max = (right - left)*floor
+            # we only moved one wall and set the new floor, let's set the new ceiling
+            else:         
+                ceiling = max(height[left], height[right])
+                
+        return return_max
+        
