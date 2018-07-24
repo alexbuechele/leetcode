@@ -2,7 +2,7 @@ def is_match(text, pattern):
     # this can be solved in O(len(text)*len(pattern)) time and space
     # using a dynamic programming/memoized solution
 
-    # first change occurances of .* to $ to simplify our approach
+    # first change occurrences of .* to $ to simplify our approach
     # If '$' is not a reserved character (is allowed in the input), use something else
     pattern = pattern.replace('.*', '$')
 
