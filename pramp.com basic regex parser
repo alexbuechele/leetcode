@@ -1,0 +1,56 @@
+def is_match(text, pattern):
+    # this can be solved in O(len(text)*len(pattern)) time and space
+    # using a dynamic programming/memoized solution
+
+    # first change occurances of .* to $ to simplify our approach
+    # If '$' is not a reserved character (is allowed in the input), use something else
+    pattern = pattern.replace('.*', '$')
+
+    # initialize a matrix that will ultimately be M rows and N columns,
+    # where M is the length of text and N is the length of pattern
+    memo_matrix = [[True]]
+    
+    # set the first row in the matrix
+    for char in pattern:
+        if char == '$':
+            if memo_matrix[0][-1]:
+                memo_matrix[0].append(True)
+            else:
+                memo_matrix[0].append(False)
+        elif char == '.':
+            memo_matrix[0].append(False)
+        elif char == '*':
+            if memo_matrix[0][-1]:
+                memo_matrix.append(True)
+            elif memo_matrix[0][-2]:
+                memo_matrix[0].append(True)
+            else:
+                memo_matrix[0].append(False)
+        else:
+            memo_matrix[0].append(False)
+            
+    # set the first column
+    for char in text:
+        memo_matrix.append([False])
+
+    # just to make keeping track of indices easier...
+    text = ' ' + text
+    pattern = ' ' + pattern
+
+    for i in range(1, len(text)):
+        for j in range(1, len(pattern)):
+            if pattern[j] == '$':
+                test = ((text[i] == text[i-1] and memo_matrix[i-1][j]) or (memo_matrix[i-1][j] and memo_matrix[i-1][j-1]) or (memo_matrix[i][-1]))
+            elif pattern[j] == '.':
+                test = memo_matrix[i-1][j-1]
+            elif pattern[j] == '*':
+                test = (text[i] == pattern[j-1] or memo_matrix[i][j-2])
+            else:
+                test = (pattern[j] == text[i] and memo_matrix[i-1][j-1])
+
+            if test:
+                memo_matrix[i].append(True)
+            else:
+                memo_matrix[i].append(False)
+                
+    return memo_matrix[-1][-1]
