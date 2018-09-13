@@ -1,0 +1,42 @@
+# 5. Longest Palindromic Substring
+
+class Solution:
+    def longestPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        if len(s)< 1:
+            return ''
+        i_1 = 0
+        i_2 = 1
+        longest = 2
+        longest_string = s[-1]
+        
+        def check_inside(index1, index2):
+            match = True
+            while index2 > index1 and match:
+                if s[index1] != s[index2]:
+                    match = False
+                index1 += 1
+                index2 -= 1
+            return match
+        
+        while i_1 < len(s) and i_2 < len(s):
+            if s[i_1] == s[i_2]:
+                if check_inside(i_1, i_2):
+                    # check outside
+                    while i_1 - 1 >= 0 and i_2 + 1 < len(s) and s[i_1 - 1] == s[i_2 + 1]:
+                        i_1 -= 1
+                        i_2 += 1
+                    if (i_2 - i_1 + 1) >= longest:
+                        longest = (i_2 - i_1 + 1)
+                        longest_string = s[i_1:i_2+1]
+            if (i_2 - i_1 + 1) > longest:
+                i_1 += 1
+            else:
+                i_2 += 1
+        return longest_string
+            
+                
+            
