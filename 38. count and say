@@ -1,0 +1,31 @@
+## 38. Count and Say
+
+## test if number same as last one
+## if so, add to count
+## if not, add count and number to output string, start new count and number
+
+class Solution:
+    def countAndSay(self, n):
+        """
+        :type n: int
+        :rtype: str
+        """
+        
+        string = "1"
+        while n > 1:
+            next_string = ""
+            n -= 1
+            
+            last_char = string[0]
+            count = 1
+            
+            for current_char in string[1:]:
+                if current_char == last_char:
+                    count += 1
+                else:
+                    next_string += str(count) + last_char
+                    last_char = current_char
+                    count = 1
+            next_string += str(count) + last_char
+            string = next_string
+        return string
