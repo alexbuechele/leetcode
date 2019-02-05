@@ -1,0 +1,55 @@
+# KickstarT 2018, Round H, Big Buttons
+
+class Node():
+    def __init__(self, char_count):
+        self.char_count = char_count
+        self.end = False
+        self.r = None
+        self.b = None
+        
+
+
+test_cases = int(input())
+
+for test_case in range(test_cases):
+    my_tree = Node(0)
+    
+    N_size, prefix_count = [int(s) for s in input().split(" ")]
+    
+    ## load the prefixes into a tree
+    for prefix in range(prefix_count):
+        this_prefix = input()
+        current_node = my_tree
+        index = 0
+        
+        while not current_node.end:
+            if this_prefix[index] == 'R':
+                if current_node.r == None:
+                    current_node.r = Node(current_node.char_count + 1)
+                current_node = current_node.r
+            elif this_prefix[index] =='B':
+                if current_node.b == None:
+                    current_node.b = Node(current_node.char_count + 1)
+                current_node = current_node.b
+            index += 1
+            if index == len(this_prefix):
+                current_node.end = True
+    
+    ## traverse the tree and count banned words
+    node_queue = [my_tree]
+    ban_total = 0
+    while node_queue:
+        current_node = node_queue.pop()
+        if current_node.end:
+            ban_total += 2**(N_size - current_node.char_count)
+        else:
+            if current_node.r:
+                node_queue.append(current_node.r)
+            if current_node.b:
+                node_queue.append(current_node.b)
+    
+    winner_count = 2**N_size - ban_total
+    print("Case #{}: {}".format(test_case + 1, winner_count))
+        
+        
+        
