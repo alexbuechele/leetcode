@@ -1,0 +1,33 @@
+# Given a string s, partition s such that every substring of the partition is a palindrome.
+# Return all possible palindrome partitioning of s.
+
+# my approach is to advance through the string, finding palindromes centered at each character 
+# or centered between characters. these are then combined with all previous lists of strings 
+# that have been generated to reach the index of the first character of that palindrome
+# i use a dict to memoize solutions reaching a certain character into the string, so i can 
+# at least spare the cost of re-computing these. 
+
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+
+        size = len(s)
+        
+        if size <= 1:
+            return [[s]]
+        combos_to_left = {k: [] for k in range(size)}
+        combos_to_left[-1] = [[]]
+        combos_to_left[0] = [[s[0]]]
+        for i in range(1, size):
+            # mirror between i and previous char
+            distance = 0
+            while i - distance > 0 and i + distance < size and s[i - 1 - distance] == s[i + distance]:
+                combos_to_left[i + distance] += [x + [s[i - distance - 1:i + distance + 1]] for x in combos_to_left[i - 2 - distance]]
+                distance += 1
+
+            # mirror on char itself
+            distance = 0
+            while i - distance >= 0 and i + distance < size and s[i - distance] == s[i + distance]:
+                combos_to_left[i + distance] += [x + [s[i - distance:i + distance + 1]] for x in combos_to_left[i - 1 - distance]]
+                distance += 1 
+
+        return combos_to_left[size-1]
